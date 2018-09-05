@@ -9,3 +9,10 @@ perl -n -e 'if (/^\d\d:\d\d\.\d+/) {$event =~ s/\n/<line>/g; print $event."\n"; 
 grep -rP '^\d\d:.*,EXCP,' | grep -oP "\d\d\.log:\d\d" | sed -se 's/.log//' | sort | uniq -c | awk '{if($1 > 20) print}'
 
 # Конец Задача №1 Вывести часы и минуты где ошибок больше 20
+
+# Начало Задача №2 группированные описание исключений (Descr) за определенный час и минуту, сначала наиболее частые
+
+grep -hoP "^31:\d\d.\d{6}-\d+,EXCP,.*\K(Descr=\'.*\')" r*/*19.log | sort | uniq -c | sort -rn | head
+grep -hoP "^31:\d\d.\d{6}-\d+,EXCP,.*\K(Descr=\'.*\')" r*/*19.log | perl -pe "s/:\d+ /:{PORT} /g" | perl -pe "s/\w+::\w+:\w+:\w+:\w+%\w+/{ADDR_IPv6}/g" | perl -pe "s/\d+\.\d+\.\d+\.\d+/{ADDR_IPv4}/g" | sort | uniq -c | sort -rn | head
+
+# Конец Задача №2 группированные описание исключений (Descr) за определенный час и минуту, сначала наиболее частые
